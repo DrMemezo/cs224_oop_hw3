@@ -1,13 +1,16 @@
 #pragma once
 
-// TODO: Try making singleton
 // There will only be 1 Canvas at a time
+#include "Grid.hpp"
+
 
 class Canvas {
     private:
-        int height;
-        int width;
-        char** data;
+        int _width;
+        int _height;
+
+        Grid grid;
+        int nextID = 1;
 
         void destroy();
         void copy(const Canvas&);
@@ -15,6 +18,5 @@ class Canvas {
         // TODO: Have a LinkedList history
     public:
         Canvas(int width);
-        ~Canvas();
         void display() const;
 };
