@@ -42,16 +42,16 @@ void Grid::display() const {
   for (int i=0; i < _width + 2; i++) cout << "-";
   cout << endl;
 }
-void Grid::update(int x, int y, char cell) {
-    if (x < 0 || x >= _width) return;
-    if (y < 0 || y >= _height) return;
+void Grid::setCell(int x, int y, char cell) {
+    if (x < 0 || x >= _width) throw invalid_argument("X is out of bounds!");
+    if (y < 0 || y >= _height) throw invalid_argument("Y is out of bounds!");
 
     _data[y][x] = cell;
 }
 
 char Grid::getCell(int x, int y) const {
-    if (x < 0 || x >= _width) throw invalid_argument("Invalid X");
-    if (y < 0 || y >= _height) throw invalid_argument("Invalid Y");
+    if (x < 0 || x >= _width) throw invalid_argument("X is out of bounds!");
+    if (y < 0 || y >= _height) throw invalid_argument("Y is out of bounds!");
 
     return _data[y][x];
 }

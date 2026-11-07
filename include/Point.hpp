@@ -5,11 +5,14 @@
 class Point : public Shape
 {
 private:
-    int x;
-    int y;
+    int _x;
+    int _y;
+    const char SYMBOL = 'o';
 public:
     // 
     Point(int x, int y);
-    ~Point();
+    void draw(Grid& grid) override;
+    // TODO: change this if needed
+    ~Point() = default;
 };
 

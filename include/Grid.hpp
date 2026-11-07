@@ -19,8 +19,14 @@ public:
     /// @param x The x-coordinate. 0 is leftmost
     /// @param y The y-coordinate. 0 is the topmost
     /// @param cell The character to put at (x, y)
-    void update(int x, int y, char cell);
+    /// @throws invalid_argument if x or y is out of bounds
+    void setCell(int x, int y, char cell);
     
+    /// @brief Gets the value of cell at (x, y)
+    /// @param x x-coordinate
+    /// @param y y-coordinate
+    /// @return value of the cell
+    /// @throws invalid_argument if x or y is out of bounds
     char getCell(int x, int y) const;
 
 

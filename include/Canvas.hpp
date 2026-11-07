@@ -6,6 +6,12 @@
 
 class Canvas {
     private:
+        struct Node {
+            Node* prevNode;
+            Node* nextNode;
+
+        }
+
         int _width;
         int _height;
 

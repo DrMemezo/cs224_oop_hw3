@@ -2,7 +2,6 @@
 using namespace std;
 
 
-#include "Canvas.hpp"
 #include "Grid.hpp"
 constexpr int CANVAS_WIDTH = 40; 
 
@@ -13,9 +12,9 @@ int main () {
   g.display();
 
 
-  g.update(0, 0, '0');
-  g.update(5, 5, '0');
-  g.update(10, 5, '0');
+  g.setCell(0, 0, '0');
+  g.setCell(5, 5, '0');
+  g.setCell(10, 5, '0');
   cout << "with in the corner" << endl;
   g.display();
   cout << g.getCell(10, 5) << endl;
