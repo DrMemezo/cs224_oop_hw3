@@ -14,21 +14,36 @@ private:
     Node* head;
     Node* tail;
 
-    /// @brief Deletes the given node
-    /// @param prevNode 
-    /// @param toDelete 
-    /// @attention Assumes that prevNode and toDelete are correct.
-    /// hence, why its private
-    void deleteNode(Node*& prevNode, Node* toDelete);
-    void addNode(Node*& prevNode, Node* toAdd);
+    void unlink(Node* node);
+
+    /// @brief Get the node by shape ID
+    Node* getNodeByID(int ID);
 
 public:
     ShapeLinkedList();
-    void addShape(const Shape* shape);
-    void removeShape(const Shape* shape);
+    /// @brief Adds the shape to the end of the list
+    /// @param shape 
+    void addShape(Shape* shape);
+    /// @brief Removes the Shape from the list and returns its pointer
+    /// @param ID the id of the shape to remove
+    /// @return the shape pointer, or nullptr if its not found
+    /// @attention it is upto the caller to safely delete the shape
+    Shape* popShapeByID(int ID);
+
+    /// @brief Get the pointer to the Shape object from its ID
+    const Shape* getShapeByID(int ID);
     
-    ShapeLinkedList(const ShapeLinkedList& other);
-    ShapeLinkedList& operator=(const ShapeLinkedList& other);
+    /// @brief Deletes the list AND all the shapes stored
+    void clearList();
+
+    int getLenght() const;
+    
+    // * There really should be no need for these methods.
+    // * Still, to prevent the implicit definitions, and to make sure
+    // * the compilers gives an error if this is used
+    ShapeLinkedList(const ShapeLinkedList& other) = delete;
+    ShapeLinkedList& operator=(const ShapeLinkedList& other) = delete;
+
     ~ShapeLinkedList();
 };
 

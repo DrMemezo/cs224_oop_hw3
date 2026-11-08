@@ -16,6 +16,10 @@ Shape& Shape::operator=(const Shape& other) {
     return *this;
 }
 
+int Shape::getID() const {
+    return ID;
+}
+
 void Shape::resetNextID() {
     nextID = 1;
 }

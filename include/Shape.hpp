@@ -17,6 +17,7 @@ public:
   Shape& operator=(const Shape& other);
 
   static void resetNextID();
+  int getID() const;
   virtual void draw(Grid& grid) = 0;
   virtual ~Shape() = default;
 

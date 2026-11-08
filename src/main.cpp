@@ -1,29 +1,38 @@
 #include <iostream>
+#include <sstream>
 using namespace std;
 
-
-#include "Grid.hpp"
+#include "Canvas.hpp"
 constexpr int CANVAS_WIDTH = 40; 
 
 int main () {
   
-  Grid g(40, 80);
-  cout << "Empty" << endl;
-  g.display();
+  Canvas canvas(CANVAS_WIDTH);
 
+  string line;
+  while (getline(cin, line)) {
+    istringstream inp_str(line);
+    string cmd;
+    if (!(inp_str >> cmd)) continue; // Skip empty line
 
-  g.setCell(0, 0, '0');
-  g.setCell(5, 5, '0');
-  g.setCell(10, 5, '0');
-  cout << "with in the corner" << endl;
-  g.display();
-  cout << g.getCell(10, 5) << endl;
+    if (cmd == "point") {
+      int x, y;
+      if (!(inp_str >> x >> y)) {
+        cerr << "USAGE: point [x] [y]" << endl;
+        continue;
+      }
 
-  g.clear();
+      cout << "Point at: " << x << ", " << y << endl;
+    }
+    else if (cmd == "quit") {break;}
 
-  cout << "Reset"<< endl;
-  g.display();
-  
+    else {
+      // TODO: Help message here
+      cout << "display help here" << endl;
+    }
+
+  } 
+   
 
   return 0;
 }
