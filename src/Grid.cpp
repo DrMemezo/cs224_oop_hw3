@@ -1,4 +1,5 @@
 #include "Grid.hpp"
+#include "constants.hpp"
 #include <stdexcept>
 #include <iostream>
 
@@ -46,6 +47,7 @@ void Grid::setCell(int x, int y, char cell) {
     if (x < 0 || x >= _width) throw invalid_argument("X is out of bounds!");
     if (y < 0 || y >= _height) throw invalid_argument("Y is out of bounds!");
 
+    if (_data[y][x] == shape_symbols::POINT) return; // Dont overwrite points
     _data[y][x] = cell;
 }
 

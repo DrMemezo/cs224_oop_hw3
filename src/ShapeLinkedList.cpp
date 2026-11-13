@@ -117,8 +117,7 @@ void ShapeLinkedList::print_history() const {
     while (traversal)
     {
         const Shape* this_shape = traversal -> shape;
-        cout << "ID: "  <<  this_shape->getID() << " "
-            << this_shape -> to_string() << endl;
+        cout << this_shape -> to_string() << endl;
         
         traversal = traversal -> nextNode;
     }

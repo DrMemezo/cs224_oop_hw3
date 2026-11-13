@@ -18,7 +18,8 @@ void Point::draw(Grid& grid) const {
 
 std::string Point::to_string() const {
     std::stringstream ss;
-    ss << "Point (" << _x << "," << _y << ")";
+    ss << "ID: " << ID << " "
+            <<  "Point (" << _x << "," << _y << ")";
     return ss.str();
 }
 
