@@ -4,6 +4,7 @@
 #include "Grid.hpp"
 #include "ShapeLinkedList.hpp"
 
+class Point;
 
 class Canvas {
     private:
@@ -17,7 +18,13 @@ class Canvas {
         void destroy();
         void copy(const Canvas&);
 
+
     public:
+        void clear();
+        bool addPoint(Point& point);
+        bool addPoint(int px, int py);
+        bool addShape(Shape& shape);
         Canvas(int width);
-        void display() const;
+        void render() const;
+        void show_history() const;
 };

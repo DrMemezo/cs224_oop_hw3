@@ -1,6 +1,13 @@
 #include "ShapeLinkedList.hpp"
 #include "Shape.hpp"
+#include "Point.hpp"
+#include "Grid.hpp"
+
+#include <iostream>
 #include <stdexcept>
+
+using std::cout;
+using std::endl;
 
 ShapeLinkedList::ShapeLinkedList()
     : head(nullptr), tail(nullptr), lenght(0)
@@ -33,8 +40,6 @@ void ShapeLinkedList::addShape(Shape* shape) {
     tail = newNode;
     lenght++;
 
-
-
 }
 Shape* ShapeLinkedList::popShapeByID(int ID) {
 
@@ -51,7 +56,6 @@ Shape* ShapeLinkedList::popShapeByID(int ID) {
     return to_return;
 
 }
-
 
 ShapeLinkedList::Node* ShapeLinkedList::getNodeByID(int ID) {
     Node* traversal = head;
@@ -89,3 +93,51 @@ void ShapeLinkedList::clearList() {
 ShapeLinkedList::~ShapeLinkedList() {
     clearList();
 }
+
+void ShapeLinkedList::drawAll(Grid& grid) const {
+    
+    grid.clear();
+    Node* traveral = head;
+
+    while (traveral) {
+        traveral -> shape -> draw(grid);
+        traveral = traveral -> nextNode;
+    }
+
+}
+void ShapeLinkedList::print_history() const {
+    
+    if (!head) {
+        cout << "No shapes in history..." << endl;
+        return;
+    }
+
+    Node* traversal = head;
+
+    while (traversal)
+    {
+        const Shape* this_shape = traversal -> shape;
+        cout << "ID: "  <<  this_shape->getID() << " "
+            << this_shape -> to_string() << endl;
+        
+        traversal = traversal -> nextNode;
+    }
+    
+}
+
+const Point* ShapeLinkedList::getPointByCoords(int x, int y) {
+  Node* traversal = head;
+
+  while (traversal) {
+    if (const Point* p = dynamic_cast<Point*>(traversal -> shape)) {
+      if ( p->getX() == x && p->getY() == y) {
+        return p;
+      }
+    }
+
+    traversal = traversal -> nextNode;
+  }
+
+  return nullptr;
+}
+

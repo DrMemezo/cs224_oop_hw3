@@ -1,6 +1,8 @@
 #pragma once
 
 class Shape;
+class Point;
+class Grid;
 
 class ShapeLinkedList
 {
@@ -32,11 +34,17 @@ public:
 
     /// @brief Get the pointer to the Shape object from its ID
     const Shape* getShapeByID(int ID);
+
+    const Point* getPointByCoords(int x, int y);
     
     /// @brief Deletes the list AND all the shapes stored
     void clearList();
 
+    void print_history() const;
+
     int getLenght() const;
+
+    void drawAll(Grid& grid) const;
     
     // * There really should be no need for these methods.
     // * Still, to prevent the implicit definitions, and to make sure

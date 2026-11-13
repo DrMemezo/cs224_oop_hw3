@@ -3,6 +3,8 @@
 class Grid;
 class Triangle;
 
+#include <string>
+
 class Shape {
 private:
   static int nextID;
@@ -18,7 +20,8 @@ public:
 
   static void resetNextID();
   int getID() const;
-  virtual void draw(Grid& grid) = 0;
+  virtual void draw(Grid& grid) const = 0;
+  virtual std::string to_string() const = 0;
   virtual ~Shape() = default;
 
 };
