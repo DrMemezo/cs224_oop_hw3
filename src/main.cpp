@@ -48,11 +48,29 @@ int main () {
         cerr << "Point could not be created!" << endl;
         continue;
       }
+      
 
       cout << "Point at: " << x << ", " << y << endl;
     }
 
-    else if (cmd == "combine") {throw runtime_error("oops i hortoned");}
+    else if (cmd == "combine") {
+      int id1, id2;
+      if (!(inp_str >> id1 >> id2)) {
+        cerr << "USAGE: combine [id1] [id2]" << endl;
+        continue;
+      }
+
+      int new_id;
+      try {
+        new_id = canvas.combine(id1, id2);
+      }
+      catch (const std::invalid_argument& e) {
+        std::cerr << "ERR: " << e.what() << endl;
+        continue;
+      }
+
+      cout << "Created new shape with id: " << new_id << endl;
+    }
     else if (cmd == "sub") {throw runtime_error("oops i hortoned");}
     else if (cmd == "mirror") {throw runtime_error("oops i hortoned");}
     else if (cmd == "del") {throw runtime_error("oops i hortoned");}
@@ -69,6 +87,22 @@ int main () {
       canvas.render();
     }
 
+    else if (cmd == "debug") {
+      int id_;
+      if (!(inp_str >> id_)) {
+        cerr << "LMAAOOOOO THIS GUY DOESNT KNOW BALL" << endl;
+        continue;
+      }
+
+      try {
+        canvas.debug(id_);
+      }
+      catch (const std::invalid_argument& e) {
+        cerr << "ERR: " << e.what() << endl;
+        continue;
+      }
+
+    }
     else if (cmd == "quit") {break;}
 
     else {

@@ -20,11 +20,25 @@ class Canvas {
 
 
     public:
-        void clear();
-        bool addPoint(Point& point);
-        bool addPoint(int px, int py);
-        bool addShape(Shape& shape);
         Canvas(int width);
-        void render() const;
+
+        /// @brief Clears the screen
+        void clear();
+        /// @brief Adds the point object to the linkedlist
+        bool addPoint(Point& point);
+        /// @brief Adds the point object simply thru x and y coords
+        bool addPoint(int px, int py);
+        /// @brief Adds a shape to th elinked list
+        bool addShape(Shape& shape);
+
+        /// @brief Show the grid onto the screen
+        void render();
+        /// @brief shows the shapes in the linked list
         void show_history() const;
+
+
+        /// @brief Trys to combine the shapes with the respecitive ids. Shows an error if not
+        int combine(int id1, int id2);
+
+        void debug(int id_);
 };

@@ -33,7 +33,7 @@ public:
     Shape* popShapeByID(int ID);
 
     /// @brief Get the pointer to the Shape object from its ID
-    const Shape* getShapeByID(int ID);
+    Shape* getShapeByID(int ID);
 
     const Point* getPointByCoords(int x, int y);
     

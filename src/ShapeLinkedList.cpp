@@ -66,7 +66,7 @@ ShapeLinkedList::Node* ShapeLinkedList::getNodeByID(int ID) {
     return traversal;
 }
 
-const Shape* ShapeLinkedList::getShapeByID(int ID) {
+Shape* ShapeLinkedList::getShapeByID(int ID) {
     Node* node = getNodeByID(ID);
     if (!node) return nullptr;
     return node -> shape;

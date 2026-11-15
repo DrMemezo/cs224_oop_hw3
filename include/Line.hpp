@@ -21,4 +21,8 @@ public:
 
   // NOTE: I'll do this later if needed 
   Line(const Line& l) = delete;
+  ~Line();
+
+
+  std::string debug_str() const override;
 };

@@ -14,7 +14,8 @@ Canvas::Canvas(int width)
     : _width(width),_height(width*2),grid(width, width * 2)
 {};
 
-void Canvas::render() const {
+void Canvas::render(){
+    shape_list.drawAll(grid);
     grid.display();
 }
 
@@ -29,7 +30,6 @@ bool Canvas::addPoint(int px, int py) {
     Point* point = new Point(px, py);
 
     shape_list.addShape(point);
-    shape_list.drawAll(grid);
     return true;
 
 }
@@ -46,11 +46,11 @@ bool Canvas::addPoint(Point& point) {
     if (px < 0 || px >= _width) {return false;}
     if (py < 0 || py >= _height) {return false;}
 
+    // TODO: MAKE THIS NOT ON THE GRID
     // * Don't allow more than one point on the same co-ordinates
-    if (grid.getCell(px, py) == shape_symbols::POINT) {return false;}
+    // if (grid.getCell(px, py) == shape_symbols::POINT) {return false;}
 
     shape_list.addShape(&point);
-    shape_list.drawAll(grid);
     return true;
 }
 
@@ -74,3 +74,24 @@ void Canvas::clear()  {
     Shape::resetNextID();
 }
 
+
+int Canvas::combine(int id1, int id2) {
+    Shape* shape1 = shape_list.getShapeByID(id1);
+    if (!shape1) throw std::invalid_argument("ID1 not in history");
+
+    Shape* shape2 = shape_list.getShapeByID(id2);
+    if (!shape2) throw std::invalid_argument("ID2 not in history");
+
+    Shape* new_shape = Shape::addShapes(*shape1, *shape2);
+
+    shape_list.addShape(new_shape);
+    return new_shape->getID();
+
+}
+
+void Canvas::debug(int id_) {
+    Shape* shape = shape_list.getShapeByID(id_);
+    if (!shape) throw std::invalid_argument("Shape not in history");
+
+    cout << shape -> debug_str() << endl;
+}
