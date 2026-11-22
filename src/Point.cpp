@@ -7,19 +7,11 @@
 #include <sstream>
 
 Point::Point(int x, int y) 
-    : Shape(nullptr), _x(x), _y(y), num_of_references(0)
+    : Shape(nullptr), _x(x), _y(y)
 {
     
 }
 
-void Point::incrementReferences() {num_of_references++;}
-void Point::decrementReferences() {
-    if (num_of_references == 0) {
-        throw std::runtime_error("Decremented reference on unreferenced point");
-    }
-
-    num_of_references--;
-}
 
 
 void Point::draw(Grid& grid) const {
@@ -50,4 +42,8 @@ Line* operator+(Point& lhs, Point& rhs) {
 
     return l;
 
+}
+
+bool Point::operator==(const Point& rhs) const {
+  return (_x == rhs._x && _y == rhs._y); 
 }

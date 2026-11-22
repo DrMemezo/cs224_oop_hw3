@@ -1,6 +1,4 @@
 #include <iostream>
-
-#include <memory>
 #include <stdexcept>
 
 using std::cout;
@@ -8,6 +6,7 @@ using std::endl;
 
 #include "Canvas.hpp"
 #include "Point.hpp"
+#include "Angle.hpp"
 #include "constants.hpp"
 
 Canvas::Canvas(int width) 
@@ -74,6 +73,10 @@ void Canvas::clear()  {
     Shape::resetNextID();
 }
 
+bool Canvas::checkBounds(const Point& p) {
+  return !(p.getX() < 0 || p.getX() >= _width || 
+      p.getY() < 0 || p.getY() >= _height);
+}
 
 int Canvas::combine(int id1, int id2) {
     Shape* shape1 = shape_list.getShapeByID(id1);
@@ -83,6 +86,21 @@ int Canvas::combine(int id1, int id2) {
     if (!shape2) throw std::invalid_argument("ID2 not in history");
 
     Shape* new_shape = Shape::addShapes(*shape1, *shape2);
+
+    
+    if (auto a = dynamic_cast<Angle*>(new_shape)) {
+      if (a->getExtensionFlag()) {
+         auto v = a->getVertex();
+        a->resetExtensionFlag();
+
+        if (!checkBounds(*v)) {
+          v->destroy(true);
+          a->destroy(true);
+          throw std::invalid_argument("Action resulted in out of bounds point!");
+        }
+        shape_list.addShape(v);
+      }
+    }
 
     shape_list.addShape(new_shape);
     return new_shape->getID();

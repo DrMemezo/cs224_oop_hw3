@@ -80,7 +80,7 @@ void ShapeLinkedList::clearList() {
     Node* traversal = head;
     while (traversal != nullptr) {
         Node* next_node = traversal -> nextNode;
-        delete traversal -> shape;
+        traversal -> shape -> destroy(true);
         delete traversal;
         traversal = next_node;
         lenght--;

@@ -17,7 +17,8 @@ class Canvas {
 
         void destroy();
         void copy(const Canvas&);
-
+    
+        bool checkBounds(const Point& p);
 
     public:
         Canvas(int width);

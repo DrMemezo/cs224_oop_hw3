@@ -1,4 +1,5 @@
 #include "Point.hpp"
+#include "Angle.hpp"
 #include "Line.hpp"
 #include "Grid.hpp"
 #include "constants.hpp"
@@ -47,13 +48,11 @@ Line::Line(Point* p1, Point* p2)
     line_char = shape_symbols::DIAGONAL_LU;
   }
 }
-
-void Line::draw(Grid& grid) const {
-  double px1 = point1->getX();
-  double px2 = point2->getX();
-
-  double py1 = point1->getY();
-  double py2 = point2->getY();
+void Line::drawSegment(Grid& grid, 
+                        int px1, int py1, 
+                        int px2, int py2,
+                        char line_char)
+{
 
   double d = sqrt(pow(px2 - px1, 2) + pow(py2 - py1, 2)) ;
   int n = std::max(1, static_cast<int>(std::round(d)));
@@ -64,6 +63,16 @@ void Line::draw(Grid& grid) const {
     int y = static_cast<int>(std::round(py1 + t * (py2 - py1)));
     grid.setCell(x, y, line_char);
   }
+}
+
+void Line::draw(Grid& grid) const {
+  int px1 = point1->getX();
+  int px2 = point2->getX();
+
+  int py1 = point1->getY();
+  int py2 = point2->getY();
+
+  drawSegment(grid, px1, py1, px2, py2, line_char);
 } 
 
 std::string Line::to_string() const { 
@@ -73,7 +82,6 @@ std::string Line::to_string() const {
         << "\tPoint 2 (ID): " << point2->getID();
     return ss.str();
 }
-
 
 std::string Line::debug_str() const {
     std::stringstream ss;
@@ -85,15 +93,30 @@ std::string Line::debug_str() const {
     return ss.str();
 }
 
-// Line& operator+(Point& rhs, Point& lhs) {
-//     Line* l = new Line(&rhs, &lhs);
-//     rhs.incrementReferences();
-//     lhs.incrementReferences();
-
-//     return *l;
-// }
-
 Line::~Line() {
   point1->decrementReferences();
   point2->decrementReferences();
+}
+
+const Point* Line::getStart() const { return point1; }
+const Point* Line::getEnd() const {return point2;}
+double Line::getAngle() const {return angle;}
+char Line::getLineChar() const {return  line_char;}
+
+
+void Line::setStart(Point* newStart) {
+  point1->decrementReferences();
+  point1 = newStart;
+}
+void Line::setEnd(Point* newEnd) {
+
+  point2->decrementReferences();
+  point2 = newEnd;
+}
+
+Angle* operator+(Line& lhs, Line& rhs) {
+  if (&lhs == &rhs) 
+    throw std::invalid_argument("Cannot add the same line!");
+  Angle* a = new Angle(&lhs, &rhs);
+  return a;
 }

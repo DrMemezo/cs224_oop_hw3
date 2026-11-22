@@ -9,12 +9,9 @@ class Point : public Shape
 private:
     int _x;
     int _y;
-    int num_of_references;
 public:
     Point(int x, int y);
     void draw(Grid& grid) const override;
-    void incrementReferences();
-    void decrementReferences();
 
     // NOTE: I'll do this later if needed
     Point(const Point& p) = delete;
@@ -26,5 +23,6 @@ public:
 
     int getX() const; 
     int getY() const;
+    bool operator==(const Point& rhs) const;
 };
 

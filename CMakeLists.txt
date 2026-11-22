@@ -17,6 +17,9 @@ target_sources(${PROJECT_NAME} PRIVATE
     src/Point.cpp
     src/ShapeLinkedList.cpp
     src/Line.cpp
+    src/Angle.cpp
+    src/GeometryHelper.cpp
+    src/Triangle.cpp
 )
 
 target_include_directories(${PROJECT_NAME}

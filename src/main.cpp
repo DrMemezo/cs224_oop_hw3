@@ -5,7 +5,7 @@
 using namespace std;
 
 #include "Canvas.hpp"
-constexpr int CANVAS_WIDTH = 40; 
+const int CANVAS_WIDTH = 40; 
 
 constexpr std::string_view HELP_MESSAGE = R"DELIM(
   point [x] [y]     ---- Creates a point at (x, y). the origin is at the top left corner
@@ -16,6 +16,7 @@ constexpr std::string_view HELP_MESSAGE = R"DELIM(
   clear             ---- Clears the canvas of all the shapes
   history           ---- Display a history of the shapes in memory
   render            ---- Renders the canvas
+  debug [id]        ---- Shows a message helpful for me debugging
   quit              ---- Quit the application
   help              ---- Render this message
 )DELIM";
