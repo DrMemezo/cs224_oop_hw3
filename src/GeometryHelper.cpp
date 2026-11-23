@@ -84,3 +84,24 @@ const Point* GeometryHelper::sharedEndpoint(const Line* a, const Line* b) {
     }
     return nullptr;
 }
+
+void GeometryHelper::reflectPoint(const Line& line, const Point& p, double& rx, double& ry) {
+    int ax = line.getStart()->getX();
+    int ay = line.getStart()->getY();
+    
+    int bx = line.getEnd()->getX();
+    int by = line.getEnd()->getY();
+
+    double dx = bx - ax;
+    double dy = by - ay;
+    double d = std::sqrt(dx * dx + dy * dy);
+
+    double ux = dx / d;
+    double uy = dy / d;
+
+    // * R = [[2ux^2 - 1, 2ux*uy], [2ux*uy, 2uy^2 - 1]]
+    double qx = p.getX() - ax;
+    double qy = p.getY() - ay;
+    rx = ax + (2 * ux * ux - 1) * qx + (2 * ux * uy) * qy;
+    ry = ay + (2 * ux * uy) * qx + (2 * uy * uy - 1) * qy;
+}

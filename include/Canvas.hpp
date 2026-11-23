@@ -42,4 +42,14 @@ class Canvas {
         int combine(int id1, int id2);
 
         void debug(int id_);
+
+        /// @brief Subtracts shape id2 from shape id1. Returns the new id, or -1 if both shapes were removed
+        int sub(int id1, int id2);
+
+        /// @brief Mirrors the last triangle that uses the line across that line. Returns the new triangle id
+        int mirror(int line_id);
+
+        /// @brief Deletes the shape with the given id
+        void del(int id);
+        
 };

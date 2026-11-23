@@ -7,6 +7,8 @@ using std::endl;
 #include "Canvas.hpp"
 #include "Point.hpp"
 #include "Angle.hpp"
+#include "Line.hpp"
+#include "Triangle.hpp"
 #include "constants.hpp"
 
 Canvas::Canvas(int width) 
@@ -112,4 +114,39 @@ void Canvas::debug(int id_) {
     if (!shape) throw std::invalid_argument("Shape not in history");
 
     cout << shape -> debug_str() << endl;
+}
+
+int Canvas::mirror(int line_id) {
+    Shape* line_shape = shape_list.getShapeByID(line_id);
+    if (!line_shape) throw std::invalid_argument("Line not in history");
+
+    Line* line = dynamic_cast<Line*>(line_shape);
+    if (!line) throw std::invalid_argument("Mirror needs a line!");
+
+    Triangle* tri = shape_list.getLastTriangleWithSide(line);
+    if (!tri) throw std::invalid_argument("No triangle has that line as a side!");
+
+    Triangle* mirrored_triangle = tri->mirrored(line);
+
+    // Verifying a triangle is withing bounds. 
+    // Otherwise delete everything.
+    for (int i=0; i < 3; i++) {
+      Point* this_p = mirrored_triangle->getCorner(i);
+      if (!checkBounds(*this_p)) {
+        Triangle::deleteReflectedTriangle(mirrored_triangle, line);
+        throw std::invalid_argument("Mirrored Line was out of bounds!");
+      }
+    }
+  
+    int mirror_line_idx = mirrored_triangle->sideIndex(line);
+    Line* added_line_1 = mirrored_triangle->getSide(( mirror_line_idx + 1 ) % 3);
+    Line* added_line_2 = mirrored_triangle->getSide(( mirror_line_idx + 2 ) % 3);
+    Point* added_point = mirrored_triangle->getCorner(mirror_line_idx);
+  
+    shape_list.addShape(added_point);
+    shape_list.addShape(added_line_1);
+    shape_list.addShape(added_line_2);
+
+    return mirrored_triangle->getID();
+
 }

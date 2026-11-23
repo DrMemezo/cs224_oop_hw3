@@ -14,4 +14,7 @@ namespace GeometryHelper {
     /// @brief true if the two lines point in directions less than 5 degrees apart
     bool areParallel(const Line& a, const Line& b);
     const Point* sharedEndpoint(const Line* a, const Line* b);
+
+    // Refelcts a point p, across a line. Stores the co-ords of new point in rx, ry
+    void reflectPoint(const Line& line, const Point& p, double& rx, double& ry);
 };

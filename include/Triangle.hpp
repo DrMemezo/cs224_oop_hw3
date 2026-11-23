@@ -30,6 +30,10 @@ public:
     /// @brief true if the two triangles have at least one side in common
     bool sharesSideWith(const Triangle* other) const;
 
-
+    /// @brief Returns a new triangle mirrored along the line.
     Triangle* mirrored(Line* line);
+
+    /// @brief deletes the triangle and the new points and lines and such EXCEPT 
+    /// The line it was reflecting.
+    static void deleteReflectedTriangle(Triangle* to_delete, Line* line);
 };

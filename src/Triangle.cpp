@@ -95,6 +95,59 @@ bool Triangle::sharesSideWith(const Triangle* other) const {
     return false;
 }
 
-Triangle* mirrored(Line* line) {
+Triangle* Triangle::mirrored(Line* line) {
+  if (!line) throw std::invalid_argument("Line cannot be null!");
 
+
+  Point* p = nullptr; 
+  int p_idx;
+  if (line == sides[0]) {
+    p = vertices[0];
+    p_idx = 0;
+  }
+  else if (line == sides[1]) {
+    p = vertices[1];
+    p_idx = 1;
+  }
+  else if (line == sides[2]) { 
+    p = vertices[2];
+    p_idx = 2;
+  }
+  else throw std::invalid_argument("Line not a part of this triangle!");
+
+  double tempx, tempy;
+  GeometryHelper::reflectPoint(*line, *p, tempx, tempy);
+  
+  int rx = std::lround(tempx);
+  int ry = std::lround(tempy);
+
+  Point* reflected_point = new Point(rx, ry);
+
+  Line* new_line1 = new Line(vertices[(p_idx + 1) % 3], reflected_point);
+  Line* new_line2 = new Line(vertices[(p_idx + 2) % 3], reflected_point);
+
+
+  return new Triangle(line, new_line1, new_line2);
 }
+
+
+void Triangle::deleteReflectedTriangle(Triangle* to_delete, Line* line) {
+  int mirror_line_idx = to_delete->sideIndex(line);
+  if (mirror_line_idx == -1) throw std::runtime_error("Line not in to_delete!");
+
+  Line* d_line_1 = to_delete->getSide(( mirror_line_idx + 1 ) % 3);
+  Line* d_line_2 = to_delete->getSide(( mirror_line_idx + 2 ) % 3);
+
+  Point* d_point = to_delete->getCorner(mirror_line_idx);
+
+  d_line_1->decrementReferences();
+  d_line_1->destroy();
+  d_line_2->decrementReferences();
+  d_line_2->destroy();
+
+  d_point->decrementReferences();
+  d_point->destroy();
+
+  delete to_delete;
+  
+}  

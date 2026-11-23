@@ -3,6 +3,7 @@
 class Shape;
 class Point;
 class Grid;
+class Triangle;
 
 class ShapeLinkedList
 {
@@ -41,6 +42,10 @@ public:
     void clearList();
 
     void print_history() const;
+
+    /// @brief Gets the most recent triangle with the given side.
+    /// @returns nullptr if the traingle is not found, otherwise the triangle pointer
+    Triangle* getLastTriangleWithSide(const Shape* side);
 
     int getLenght() const;
 

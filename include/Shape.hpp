@@ -30,6 +30,7 @@ public:
   static Shape* addShapes(Shape& s1, Shape& s2);
 
   virtual std::string debug_str() const {throw std::invalid_argument("debug_str not defined for this");}
+  virtual bool sameAs(const Shape* other) const {throw std::runtime_error("Not implemented yet");}
 
   void incrementReferences();
   void decrementReferences();

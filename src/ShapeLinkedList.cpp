@@ -1,6 +1,7 @@
 #include "ShapeLinkedList.hpp"
 #include "Shape.hpp"
 #include "Point.hpp"
+#include "Triangle.hpp"
 #include "Grid.hpp"
 
 #include <iostream>
@@ -140,3 +141,13 @@ const Point* ShapeLinkedList::getPointByCoords(int x, int y) {
   return nullptr;
 }
 
+Triangle* ShapeLinkedList::getLastTriangleWithSide(const Shape* side) {
+    Node* traversal = tail;
+    while (traversal) {
+        if (Triangle* t = dynamic_cast<Triangle*>(traversal -> shape)) {
+            if (t -> sideIndex(side) >= 0) return t;
+        }
+        traversal = traversal -> prevNode;
+    }
+    return nullptr;
+}
