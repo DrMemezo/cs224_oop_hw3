@@ -10,11 +10,6 @@ public:
     /// @param lastTriangle The last triangle of the shape. The shape owns it (and the chain behind it) from now on
     Rectangle(Triangle* lastTriangle);
 
-    // TODO: Rule of three. 
-    Rectangle(const Rectangle& other);
-    Rectangle& operator=(const Rectangle& other);
-    ~Rectangle();
-
     void draw(Grid& grid) const override;
     std::string to_string() const override;
     bool sameAs(const Shape* other) const override;

@@ -87,8 +87,10 @@ int Canvas::combine(int id1, int id2) {
     Shape* shape2 = shape_list.getShapeByID(id2);
     if (!shape2) throw std::invalid_argument("ID2 not in history");
 
-    Shape* new_shape = Shape::addShapes(*shape1, *shape2);
+    // If the operation fails, the IDs that it used are given back
+    int first_new_id = Shape::getNextID();
 
+    Shape* new_shape = Shape::addShapes(*shape1, *shape2);
     
     if (auto a = dynamic_cast<Angle*>(new_shape)) {
       if (a->getExtensionFlag()) {
@@ -98,9 +100,18 @@ int Canvas::combine(int id1, int id2) {
         if (!checkBounds(*v)) {
           v->destroy(true);
           a->destroy(true);
+          Shape::setNextID(first_new_id);
           throw std::invalid_argument("Action resulted in out of bounds point!");
         }
         shape_list.addShape(v);
+      }
+    }
+
+    // A triangle made by extending lines can have new corners. Add the ones that are not in the list yet
+    if (auto t = dynamic_cast<Triangle*>(new_shape)) {
+      for (int i = 0; i < 3; i++) {
+        Point* corner = t->getCorner(i);
+        if (!shape_list.getShapeByID(corner->getID())) shape_list.addShape(corner);
       }
     }
 
@@ -126,6 +137,8 @@ int Canvas::mirror(int line_id) {
     Triangle* tri = shape_list.getLastTriangleWithSide(line);
     if (!tri) throw std::invalid_argument("No triangle has that line as a side!");
 
+    
+    int first_new_id = Shape::getNextID();
     Triangle* mirrored_triangle = tri->mirrored(line);
 
     // Verifying a triangle is withing bounds. 
@@ -134,6 +147,7 @@ int Canvas::mirror(int line_id) {
       Point* this_p = mirrored_triangle->getCorner(i);
       if (!checkBounds(*this_p)) {
         Triangle::deleteReflectedTriangle(mirrored_triangle, line);
+        Shape::setNextID(first_new_id);
         throw std::invalid_argument("Mirrored Line was out of bounds!");
       }
     }
@@ -143,6 +157,7 @@ int Canvas::mirror(int line_id) {
     Line* added_line_2 = mirrored_triangle->getSide(( mirror_line_idx + 2 ) % 3);
     Point* added_point = mirrored_triangle->getCorner(mirror_line_idx);
   
+    // Add new shapes to the history
     shape_list.addShape(added_point);
     shape_list.addShape(added_line_1);
     shape_list.addShape(added_line_2);

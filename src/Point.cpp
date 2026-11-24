@@ -47,3 +47,10 @@ Line* operator+(Point& lhs, Point& rhs) {
 bool Point::operator==(const Point& rhs) const {
   return (_x == rhs._x && _y == rhs._y); 
 }
+
+bool Point::sameAs(const Shape* other) const {
+  if (this == other) return true;
+
+  const Point* p = dynamic_cast<const Point*>(other);
+  return p != nullptr && *this == *p;
+}

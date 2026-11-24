@@ -48,6 +48,7 @@ Line::Line(Point* p1, Point* p2)
     line_char = shape_symbols::DIAGONAL_LU;
   }
 }
+
 void Line::drawSegment(Grid& grid, 
                         int px1, int py1, 
                         int px2, int py2,
@@ -107,11 +108,23 @@ char Line::getLineChar() const {return  line_char;}
 void Line::setStart(Point* newStart) {
   point1->decrementReferences();
   point1 = newStart;
+  point1->incrementReferences();
 }
 void Line::setEnd(Point* newEnd) {
 
   point2->decrementReferences();
   point2 = newEnd;
+  point2->incrementReferences();
+}
+
+bool Line::sameAs(const Shape* other) const {
+  if (this == other) return true;
+
+  const Line* l = dynamic_cast<const Line*>(other);
+  if (!l) return false;
+
+  return (*point1 == *l->point1 && *point2 == *l->point2) ||
+         (*point1 == *l->point2 && *point2 == *l->point1);
 }
 
 Angle* operator+(Line& lhs, Line& rhs) {

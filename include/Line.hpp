@@ -40,4 +40,5 @@ public:
 
   friend Angle* operator+(Line& lhs, Line& rhs);
 
+  bool sameAs(const Shape* other) const override;
 };

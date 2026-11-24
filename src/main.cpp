@@ -72,11 +72,70 @@ int main () {
 
       cout << "Created new shape with id: " << new_id << endl;
     }
-    else if (cmd == "sub") {throw runtime_error("oops i hortoned");}
-    else if (cmd == "mirror") {throw runtime_error("oops i hortoned");}
-    else if (cmd == "del") {throw runtime_error("oops i hortoned");}
+
+    else if (cmd == "sub") {
+      int id1, id2;
+      if (!(inp_str >> id1 >> id2)) {
+        cerr << "USAGE: sub [id1] [id2]" << endl;
+        continue;
+      }
+
+      int new_id;
+      try {
+        new_id = canvas.sub(id1, id2);
+      }
+      catch (const std::invalid_argument& e) {
+        std::cerr << "ERR: " << e.what() << endl;
+        continue;
+      }
+
+      if (new_id == -1) cout << "Both shapes were removed" << endl;
+      else cout << "Created new shape with id: " << new_id << endl;
+    }
+    else if (cmd == "mirror") {
+      int line_id;
+      if (!(inp_str >> line_id)) {
+        cerr << "USAGE: mirror [line id]" << endl;
+        continue;
+      }
+
+      int new_id;
+      try {
+        new_id = canvas.mirror(line_id);
+      }
+      catch (const std::invalid_argument& e) {
+        std::cerr << "ERR: " << e.what() << endl;
+        continue;
+      }
+
+      cout << "Created new triangle with id: " << new_id << endl;
+}
+    else if (cmd == "del") {
+      int id;
+      if (!(inp_str >> id)) {
+        cerr << "USAGE: del [id]" << endl;
+        continue;
+      }
+
+      try {
+        canvas.del(id);
+      }
+      catch (const std::invalid_argument& e) {
+        std::cerr << "ERR: " << e.what() << endl;
+        continue;
+      }
+
+      cout << "Deleted shape with id: " << id << endl;
+}
     else if (cmd == "clear") {
-      canvas.clear();
+
+      try {
+          canvas.clear();
+      } catch (const std::invalid_argument& e) {
+        std::cerr << "ERR: " << e.what() << endl;
+        continue;
+      }
+
       cout << "Cleared successfully" << endl;
     }
 
@@ -104,7 +163,11 @@ int main () {
       }
 
     }
-    else if (cmd == "quit") {break;}
+    else if (cmd == "quit") {
+      // I think the OS will do the cleanup automatically but still
+      canvas.clear();
+      break;
+    }
 
     else {
       print_help_message();

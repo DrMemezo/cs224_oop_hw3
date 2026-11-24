@@ -24,5 +24,6 @@ public:
     int getX() const; 
     int getY() const;
     bool operator==(const Point& rhs) const;
+    bool sameAs(const Shape* other) const override;
 };
 

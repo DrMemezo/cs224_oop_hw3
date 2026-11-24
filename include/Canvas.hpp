@@ -3,6 +3,7 @@
 // There will only be 1 Canvas at a time
 #include "Grid.hpp"
 #include "ShapeLinkedList.hpp"
+#include <stdexcept>
 
 class Point;
 
@@ -44,12 +45,11 @@ class Canvas {
         void debug(int id_);
 
         /// @brief Subtracts shape id2 from shape id1. Returns the new id, or -1 if both shapes were removed
-        int sub(int id1, int id2);
+        int sub(int id1, int id2) {throw std::runtime_error("not implementd yet");}
 
         /// @brief Mirrors the last triangle that uses the line across that line. Returns the new triangle id
         int mirror(int line_id);
-
         /// @brief Deletes the shape with the given id
-        void del(int id);
+        void del(int id){throw std::runtime_error("not here :((((");}
         
 };
