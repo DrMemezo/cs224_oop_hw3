@@ -24,6 +24,10 @@ Angle::Angle(Line* a, Line* b)
     bool ext2 = (u > 1 + EPS) || (u < -EPS);
     extensionRequiredFlag = ext1 || ext2;
 
+    // Checked now so that the canvas doesnt have to do it.
+    if (extensionRequiredFlag && !Shape::inBounds(std::lround(x), std::lround(y)))
+        throw std::invalid_argument("Action resulted in out of bounds point!");
+
     if (!extensionRequiredFlag) {
         // Lines already meet at their ends so we can reuse the existing endpoint
         vertex = (t < 0.5) ? const_cast<Point*>(a->getStart())
@@ -100,3 +104,46 @@ bool Angle::sameAs(const Shape* other) const {
 
 Line* Angle::getArm1() const { return arm1; }
 Line* Angle::getArm2() const { return arm2; }
+
+
+Triangle* operator+(Angle& lhs, Line& rhs) {
+  
+    Line* arm1 = lhs.getArm1();
+    Line* arm2 = lhs.getArm2();
+    Point* v = lhs.getVertex();
+
+    if (&rhs == arm1 || &rhs == arm2)
+        throw std::invalid_argument("The line is already an arm of the angle!");
+
+    double x1, y1, t1, u1;
+    // u1 and u2 is where the point lies on the rhs line 
+    // respective to arm1 and arm2
+    double x2, y2, t2, u2;
+    if (!GeometryHelper::intersectLines(*arm1, rhs, x1, y1, t1, u1) ||
+        !GeometryHelper::intersectLines(*arm2, rhs, x2, y2, t2, u2))
+        throw std::invalid_argument("The line is parallel to an arm of the angle!");
+
+    // Im opting to not allow extensions where there will be multiple angles created. 
+    double u_low = std::min(u1, u2);
+    double u_high = std::max(u1, u2);
+    if (!GeometryHelper::atOrBeyondFarEnd(arm1, v, t1) // intersecting WITHIn arm1
+      || !GeometryHelper::atOrBeyondFarEnd(arm2, v, t2) // intersecting WITHIn arm2
+      || u_low > EPS || u_high < 1 - EPS) // Intersecting within the rhs line.
+        throw std::invalid_argument("These lines cannot make a triangle by only extending them!");
+
+    int rx1 = std::lround(x1);
+    int ry1 = std::lround(y1);
+    int rx2 = std::lround(x2);
+    int ry2 = std::lround(y2);
+
+    // Check if its not intersecting at the exact same point
+    if (rx1 == rx2 && ry1 == ry2)
+        throw std::invalid_argument("The triangle would be too small!");
+    if (!Shape::inBounds(rx1, ry1) || !Shape::inBounds(rx2, ry2))
+        throw std::invalid_argument("Action resulted in out of bounds point!");
+
+    // TODO: ADD DOING LOGIC
+}
+Line* operator-(Angle& lhs, Line& rhs) {
+
+}

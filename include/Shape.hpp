@@ -2,6 +2,8 @@
 
 class Grid;
 class Triangle;
+class Point;
+
 
 #include <string>
 #include <stdexcept>
@@ -9,6 +11,8 @@ class Triangle;
 class Shape {
 private:
   static int nextID;
+  static int x_bound; // x may not be equal to or more than this value
+  static int y_bound; // same for y
 
 protected:
   int ID;
@@ -42,5 +46,11 @@ public:
 
   void incrementReferences();
   void decrementReferences();
+
+
+  /// @brief Checks if the point is within bounds of the preset Canvas values.
+  static bool inBounds(int x, int y);
+  static bool inBounds(const Point& p);
+  static void setBounds(int widht, int height);
 };
 

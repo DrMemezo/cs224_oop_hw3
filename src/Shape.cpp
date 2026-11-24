@@ -119,3 +119,16 @@ Shape* Shape::subShapes(Shape& s1, Shape& s2) {
 
     throw std::invalid_argument("Not allowed!");
 }
+
+bool Shape::inBounds(int x, int y) {
+  return !(x < 0 || x >= x_bound  || 
+      y < 0 || y >= y_bound);
+  
+}
+bool Shape::inBounds(const Point& p) {
+  return inBounds(p.getX(), p.getY());
+}
+void Shape::setBounds(int widht, int height) {
+  x_bound = widht;
+  y_bound = height;
+}

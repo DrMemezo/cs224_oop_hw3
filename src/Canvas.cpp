@@ -13,7 +13,9 @@ using std::endl;
 
 Canvas::Canvas(int width) 
     : _width(width),_height(width*2),grid(width, width * 2)
-{};
+{
+  Shape::setBounds(_width, _height);
+};
 
 void Canvas::render(){
     shape_list.drawAll(grid);
@@ -90,7 +92,14 @@ int Canvas::combine(int id1, int id2) {
     // If the operation fails, the IDs that it used are given back
     int first_new_id = Shape::getNextID();
 
-    Shape* new_shape = Shape::addShapes(*shape1, *shape2);
+    Shape* new_shape = nullptr;
+    try {
+      new_shape = Shape::addShapes(*shape1, *shape2);
+    }
+    catch (const std::invalid_argument& e) {
+        Shape::setNextID(first_new_id);
+        throw;
+    }
     
     if (auto a = dynamic_cast<Angle*>(new_shape)) {
       if (a->getExtensionFlag()) {
@@ -98,10 +107,12 @@ int Canvas::combine(int id1, int id2) {
         a->resetExtensionFlag();
 
         if (!checkBounds(*v)) {
-          v->destroy(true);
-          a->destroy(true);
-          Shape::setNextID(first_new_id);
-          throw std::invalid_argument("Action resulted in out of bounds point!");
+          // v->destroy(true);
+          // a->destroy(true);
+          // Shape::setNextID(first_new_id);
+          // throw std::invalid_argument("Action resulted in out of bounds point!");
+          throw std::runtime_error("gng how does this even happen");
+          // So the angle class shouldn't let this happen but still
         }
         shape_list.addShape(v);
       }

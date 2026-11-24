@@ -29,8 +29,11 @@ public:
     Point* getVertex() const {return vertex;}
 
     bool usesArm(const Shape* s) const;
-    bool sameAs(const Shape* other) const;
+    bool sameAs(const Shape* other) const override;
 
     bool getExtensionFlag() const {return extensionRequiredFlag;}
     void resetExtensionFlag() {extensionRequiredFlag = false;}
+
+    friend Triangle* operator+(Angle& lhs, Line& rhs);
+    friend Line* operator-(Angle& lhs, Line& rhs);
 };

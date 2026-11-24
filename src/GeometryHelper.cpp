@@ -1,4 +1,5 @@
 #include "GeometryHelper.hpp"
+#include "constants.hpp"
 #include <cmath>
 #include <stdexcept>
 
@@ -104,4 +105,9 @@ void GeometryHelper::reflectPoint(const Line& line, const Point& p, double& rx, 
     double qy = p.getY() - ay;
     rx = ax + (2 * ux * ux - 1) * qx + (2 * ux * uy) * qy;
     ry = ay + (2 * ux * uy) * qx + (2 * uy * uy - 1) * qy;
+}
+
+bool GeometryHelper::atOrBeyondFarEnd(const Line* arm, const Point* vertex, double t) {
+    if (*arm->getStart() == *vertex) return t >= 1 - EPS;
+    return t <= EPS;
 }
