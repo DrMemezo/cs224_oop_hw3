@@ -11,6 +11,8 @@
 #include <stdexcept>
 
 int Shape::nextID = 1;
+int Shape::x_bound = 0; // Need to set this
+int Shape::y_bound = 0;
 
 Shape::Shape(Triangle* prevT)
     : ID(nextID++), prevTriangle(prevT), num_of_references(0) {

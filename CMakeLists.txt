@@ -20,6 +20,9 @@ target_sources(${PROJECT_NAME} PRIVATE
     src/Angle.cpp
     src/GeometryHelper.cpp
     src/Triangle.cpp
+    src/Rectangle.cpp
+    src/Hexagon.cpp
+    src/Pentagon.cpp
 )
 
 target_include_directories(${PROJECT_NAME}

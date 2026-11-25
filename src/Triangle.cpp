@@ -6,6 +6,7 @@
 #include "GeometryHelper.hpp"
 
 #include <sstream>
+#include <cmath>
 #include <stdexcept>
 
 void Triangle::getVerticesFromSides() {
