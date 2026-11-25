@@ -68,10 +68,10 @@ Shape* Shape::addShapes(Shape& s1, Shape& s2) {
       } 
     }
 
-    // TODO: angle + line = triangle
+    // angle + line = triangle
     if (auto a = dynamic_cast<Angle*>(&s1)) {
         if (auto l = dynamic_cast<Line*>(&s2)) {
-            // return *a + *l;
+            return *a + *l;
         }
     }
 

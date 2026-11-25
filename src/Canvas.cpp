@@ -101,6 +101,7 @@ int Canvas::combine(int id1, int id2) {
         throw;
     }
     
+    // Bounds checking happens when the angle is being created
     if (auto a = dynamic_cast<Angle*>(new_shape)) {
       if (a->getExtensionFlag()) {
          auto v = a->getVertex();
@@ -175,4 +176,16 @@ int Canvas::mirror(int line_id) {
 
     return mirrored_triangle->getID();
 
+}
+
+void Canvas::del(int id) {
+    Shape* shape = shape_list.getShapeByID(id);
+    if (!shape) throw std::invalid_argument("Shape not in history");
+
+    // Check before taking it out of the list, so that a refused delete changes nothing
+    if (shape->getReferences() > 0) 
+      throw std::invalid_argument("Cannot delete a shape that is used by another shape!");
+
+    shape_list.popShapeByID(id);
+    shape->destroy();
 }

@@ -33,6 +33,7 @@ public:
     /// @brief Returns a new triangle mirrored along the line.
     Triangle* mirrored(Line* line);
 
+    bool sameAs(const Shape* other) const override;
     /// @brief deletes the triangle and the new points and lines and such EXCEPT 
     /// The line it was reflecting.
     static void deleteReflectedTriangle(Triangle* to_delete, Line* line);

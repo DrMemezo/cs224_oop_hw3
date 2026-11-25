@@ -130,6 +130,22 @@ Triangle* Triangle::mirrored(Line* line) {
   return new Triangle(line, new_line1, new_line2);
 }
 
+bool Triangle::sameAs(const Shape* other) const {
+    if (this == other) return true;
+
+    const Triangle* t = dynamic_cast<const Triangle*>(other);
+    if (!t) return false;
+
+    // Same triangle if every corner is also a corner of the other one
+    for (int i = 0; i < 3; i++) {
+        bool found = false;
+        for (int j = 0; j < 3; j++) {
+            if (*vertices[i] == *t->vertices[j]) found = true;
+        }
+        if (!found) return false;
+    }
+    return true;
+}
 
 void Triangle::deleteReflectedTriangle(Triangle* to_delete, Line* line) {
   int mirror_line_idx = to_delete->sideIndex(line);

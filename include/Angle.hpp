@@ -16,6 +16,10 @@ private:
     
     ~Angle() override;
 
+    /// @brief From the choice of the three points, gets the point which maches the coordinates 
+    /// @returns one of the three points, or a new point.
+    static Point* pointAt(int x, int y, Point* p1, Point* p2, Point* p3);
+  
 public:
     /// @throws invalid_argument if the lines are parallel
     Angle(Line* a, Line* b);

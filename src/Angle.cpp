@@ -4,6 +4,7 @@
 #include "Grid.hpp"
 #include "GeometryHelper.hpp"
 #include "constants.hpp"
+#include "Triangle.hpp"
 
 #include <sstream>
 #include <stdexcept>
@@ -106,6 +107,14 @@ Line* Angle::getArm1() const { return arm1; }
 Line* Angle::getArm2() const { return arm2; }
 
 
+Point* Angle::pointAt(int x, int y, Point* p1, Point* p2, Point* p3) {
+    Point* all[3] = {p1, p2, p3};
+    for (int i = 0; i < 3; i++) {
+        if (all[i]->getX() == x && all[i]->getY() == y) return all[i];
+    }
+    return new Point(x, y);
+}
+
 Triangle* operator+(Angle& lhs, Line& rhs) {
   
     Line* arm1 = lhs.getArm1();
@@ -131,9 +140,9 @@ Triangle* operator+(Angle& lhs, Line& rhs) {
       || u_low > EPS || u_high < 1 - EPS) // Intersecting within the rhs line.
         throw std::invalid_argument("These lines cannot make a triangle by only extending them!");
 
-    int rx1 = std::lround(x1);
+    int rx1 = std::lround(x1); // Intersection coords with arm 1
     int ry1 = std::lround(y1);
-    int rx2 = std::lround(x2);
+    int rx2 = std::lround(x2);// Intersection coords with arm 2
     int ry2 = std::lround(y2);
 
     // Check if its not intersecting at the exact same point
@@ -142,8 +151,35 @@ Triangle* operator+(Angle& lhs, Line& rhs) {
     if (!Shape::inBounds(rx1, ry1) || !Shape::inBounds(rx2, ry2))
         throw std::invalid_argument("Action resulted in out of bounds point!");
 
-    // TODO: ADD DOING LOGIC
+    // All the checks are done, now we can change the lines
+    Point* far1 = const_cast<Point*>((*arm1->getStart() == *v) ? arm1->getEnd() : arm1->getStart()); // The point away from the vertex of the angle
+    Point* far2 = const_cast<Point*>((*arm2->getStart() == *v) ? arm2->getEnd() : arm2->getStart());
+    Point* line_start = const_cast<Point*>(rhs.getStart());
+    Point* line_end = const_cast<Point*>(rhs.getEnd());
+
+    // The corner where the line meets arm 1 and arm 2 (a new point if there is not one there already)
+    Point* corner1 = Angle::pointAt(rx1, ry1, far1, line_start, line_end);
+    Point* corner2 = Angle::pointAt(rx2, ry2, far2, line_start, line_end);
+
+    if (corner1 != far1) {
+        if (*arm1->getStart() == *v) arm1->setEnd(corner1);
+        else arm1->setStart(corner1);
+    }
+    if (corner2 != far2) {
+        if (*arm2->getStart() == *v) arm2->setEnd(corner2);
+        else arm2->setStart(corner2);
+    }
+
+    // The corner that is met at the lower position of the line is the new start of the line
+    Point* new_start = (u1 < u2) ? corner1 : corner2;
+    Point* new_end = (u1 < u2) ? corner2 : corner1;
+    if (new_start != line_start) rhs.setStart(new_start);
+    if (new_end != line_end) rhs.setEnd(new_end);
+
+    return new Triangle(arm1, arm2, &rhs);
 }
 Line* operator-(Angle& lhs, Line& rhs) {
+  // TODO 
+  throw std::runtime_error("Not here");
 
 }

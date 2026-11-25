@@ -50,6 +50,6 @@ class Canvas {
         /// @brief Mirrors the last triangle that uses the line across that line. Returns the new triangle id
         int mirror(int line_id);
         /// @brief Deletes the shape with the given id
-        void del(int id){throw std::runtime_error("not here :((((");}
+        void del(int id);
         
 };

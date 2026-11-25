@@ -46,6 +46,7 @@ public:
 
   void incrementReferences();
   void decrementReferences();
+  int getReferences() const {return num_of_references;}
 
 
   /// @brief Checks if the point is within bounds of the preset Canvas values.
