@@ -53,5 +53,6 @@ public:
   static bool inBounds(int x, int y);
   static bool inBounds(const Point& p);
   static void setBounds(int widht, int height);
+  friend Shape* operator+(Shape& lhs, Triangle& rhs);
 };
 

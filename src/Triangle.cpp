@@ -41,7 +41,7 @@ void Triangle::getVerticesFromSides() {
 
 Triangle::Triangle(Line* l1, Line* l2, Line* l3)
     : Shape(nullptr), sides{l1, l2, l3}, 
-      vertices{nullptr, nullptr, nullptr}
+      vertices{nullptr, nullptr, nullptr}, mirroredFrom(nullptr)
 {
     if (!l1 || !l2 || !l3) 
       throw std::invalid_argument("A triangle needs three lines!");
@@ -127,7 +127,13 @@ Triangle* Triangle::mirrored(Line* line) {
   Line* new_line2 = new Line(vertices[(p_idx + 2) % 3], reflected_point);
 
 
-  return new Triangle(line, new_line1, new_line2);
+  Triangle* yeaeh =new Triangle(line, new_line1, new_line2);
+  yeaeh->mirroredFrom = this;
+  return yeaeh;
+}
+
+bool Triangle::isMirrorOf(const Triangle& aaaa) const {
+  return (mirroredFrom != nullptr && mirroredFrom == &aaaa);
 }
 
 bool Triangle::sameAs(const Shape* other) const {

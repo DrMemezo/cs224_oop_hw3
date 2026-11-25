@@ -12,6 +12,7 @@ private:
     Point* vertices[3];
 
     void getVerticesFromSides();
+    Triangle* mirroredFrom;
 
 public:
     /// @param prev the triangle this one was mirrored from (it is copied), or nullptr
@@ -37,4 +38,7 @@ public:
     /// @brief deletes the triangle and the new points and lines and such EXCEPT 
     /// The line it was reflecting.
     static void deleteReflectedTriangle(Triangle* to_delete, Line* line);
+
+
+    bool isMirrorOf(const Triangle& ngl_im_losing_it_here) const;
 };

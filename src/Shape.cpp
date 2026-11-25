@@ -3,6 +3,10 @@
 #include "Line.hpp"
 #include "Angle.hpp"
 #include "Triangle.hpp"
+#include "Hexagon.hpp"
+#include "Pentagon.hpp"
+#include "Rectangle.hpp"
+#include "GeometryHelper.hpp"
 
 #include <stdexcept>
 
@@ -75,12 +79,40 @@ Shape* Shape::addShapes(Shape& s1, Shape& s2) {
         }
     }
 
-    // TODO: triangle (or polygon) + triangle = polygon with one more side
+    // triangle (or polygon) + triangle = polygon with one more side
     if (auto t = dynamic_cast<Triangle*>(&s2)) {
-        // return s1 + *t;
+        return s1 + *t;
     }
 
     throw std::invalid_argument("Not allowed!");
+}
+
+
+Shape* operator+(Shape& lhs, Triangle& rhs) {
+
+    if (dynamic_cast<Hexagon*>(&lhs) != nullptr) throw std::invalid_argument("A hexagon is the biggest shape!");
+    Triangle* last = lhs.getPrevTriangle();
+    if (!last) throw std::invalid_argument("Cannot perform this operation!");
+    if (!rhs.isMirrorOf(*last)) throw std::invalid_argument("This is not the mirror image of the previous triangle!");
+  
+    lhs.incrementReferences();
+    Rectangle* rect_ptr = dynamic_cast<Rectangle*>(&lhs);
+    if (rect_ptr) {
+    Pentagon* new_this = new Pentagon(&rhs);
+    return new_this;
+  }
+
+    Pentagon* pen_ptr = dynamic_cast<Pentagon*>(&lhs);
+    if (pen_ptr) {
+    Hexagon* new_this = new Hexagon(&rhs);
+    return new_this;
+  }
+
+  Triangle* tri_ptr = dynamic_cast<Triangle*>(&lhs);
+  if (!tri_ptr) throw std::runtime_error("something went wrong with adding triangle to a shape");
+
+  Rectangle* new_this = new Rectangle(&rhs);
+  return new_this;
 }
 
 // TODO: For doing Line + Line + Line
